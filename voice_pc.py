@@ -1,56 +1,10 @@
 import serial
 import serial.tools.list_ports
 import time
-from commands import *
-from chatgpt import ask_gpt
+from assistant import process_command
+
 def send_ok():
     ser.write(b"PC:OK\n")
-def process_command(line):
-
-    if line == "OPEN_EDGE":
-
-        open_edge()
-        send_ok()
-
-    elif line == "OPEN_CALC":
-
-        open_calc()
-        send_ok()
-
-    elif line == "OPEN_NOTEPAD":
-
-        open_programming()
-        send_ok()
-
-    elif line == "OPEN_PAINT":
-
-        open_paint()
-        send_ok()
-
-    elif line == "OPEN_YOUTUBE":
-
-        open_youtube()
-        send_ok()
-
-    elif line == "OPEN_CHATGPT":
-
-        try:
-
-            question = input("\nВведите вопрос для ChatGPT: ")
-
-            answer = ask_gpt(question)
-
-            print("\n========== GPT ==========")
-            print(answer)
-            print("=========================\n")
-
-            send_ok()
-
-        except Exception as e:
-
-            print(e)
-
-            ser.write(b"PC:ERROR\n")
 
 def connect():
 
@@ -117,4 +71,10 @@ while True:
 
     print("Received:", line)
 
-    process_command(line)
+    try:
+        process_command(line)  # эта функция уже из assistant.py
+        send_ok()
+
+    except Exception as e:
+        print(e)
+        ser.write(b"PC:ERROR\n")
