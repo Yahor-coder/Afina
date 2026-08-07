@@ -1,9 +1,56 @@
 import serial
 import serial.tools.list_ports
-import subprocess
-import webbrowser
 import time
+from commands import *
+from chatgpt import ask_gpt
+def send_ok():
+    ser.write(b"PC:OK\n")
+def process_command(line):
 
+    if line == "OPEN_EDGE":
+
+        open_edge()
+        send_ok()
+
+    elif line == "OPEN_CALC":
+
+        open_calc()
+        send_ok()
+
+    elif line == "OPEN_NOTEPAD":
+
+        open_programming()
+        send_ok()
+
+    elif line == "OPEN_PAINT":
+
+        open_paint()
+        send_ok()
+
+    elif line == "OPEN_YOUTUBE":
+
+        open_youtube()
+        send_ok()
+
+    elif line == "OPEN_CHATGPT":
+
+        try:
+
+            question = input("\nВведите вопрос для ChatGPT: ")
+
+            answer = ask_gpt(question)
+
+            print("\n========== GPT ==========")
+            print(answer)
+            print("=========================\n")
+
+            send_ok()
+
+        except Exception as e:
+
+            print(e)
+
+            ser.write(b"PC:ERROR\n")
 
 def connect():
 
@@ -70,76 +117,4 @@ while True:
 
     print("Received:", line)
 
-    # ------------------------------
-    # БРАУЗЕР + TELEGRAM
-    # ------------------------------
-
-    if line == "OPEN_EDGE":
-
-        subprocess.Popen([
-            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-        ])
-
-        subprocess.Popen(
-            r"D:\Telegram Desktop\Telegram.exe"
-        )
-
-    # ------------------------------
-    # ДЕНЬГИ
-    # ------------------------------
-
-    elif line == "OPEN_CALC":
-
-        subprocess.Popen("calc.exe")
-
-        subprocess.Popen([
-            "explorer",
-            r"C:\Users\Goodf\Desktop\таблицы деньги\Личный бюджет 2025.xlsx"
-        ])
-
-        subprocess.Popen([
-            "explorer",
-            r"C:\Users\Goodf\Desktop\таблицы деньги\Таблица для всех инвестиции (учёт вложений).xlsx"
-        ])
-
-    # ------------------------------
-    # ПРОГРАММИРОВАНИЕ
-    # ------------------------------
-
-    elif line == "OPEN_NOTEPAD":
-
-        subprocess.Popen(
-            r"C:\Users\Goodf\AppData\Local\Programs\Arduino IDE\Arduino IDE.exe"
-        )
-
-        subprocess.Popen(
-            r"D:\PyCharm Community Edition 2025.2.6\bin\pycharm64.exe"
-        )
-
-        subprocess.Popen(
-            r"C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\devenv.exe"
-        )
-
-    # ------------------------------
-    # PAINT
-    # ------------------------------
-
-    elif line == "OPEN_PAINT":
-
-        subprocess.Popen("mspaint.exe")
-
-    # ------------------------------
-    # CHATGPT
-    # ------------------------------
-
-    elif line == "OPEN_CHATGPT":
-
-        webbrowser.open("https://chatgpt.com")
-
-    # ------------------------------
-    # YOUTUBE
-    # ------------------------------
-
-    elif line == "OPEN_YOUTUBE":
-
-        webbrowser.open("https://youtube.com")
+    process_command(line)
