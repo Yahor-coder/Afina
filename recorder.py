@@ -15,6 +15,10 @@ def record_audio(filename, duration=5, samplerate=16000):
 
     sd.wait()
 
-    sf.write(filename, audio, samplerate)
+    sf.write(
+        filename,
+        audio,
+        samplerate
+    )
 
     print("✅ Запись завершена")

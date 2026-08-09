@@ -59,13 +59,27 @@ def detect_command(text):
 
     return response.output_text.strip()
 
-
+conversation = []
 def ask_gpt(question):
+
+    conversation.append({
+        "role": "user",
+        "content": question
+    })
 
     response = client.responses.create(
         model="gpt-5.5",
-        input=question
+        input=conversation
     )
+
+    answer = response.output_text.strip()
+
+    conversation.append({
+        "role": "assistant",
+        "content": answer
+    })
+
+    return answer
 
     return response.output_text.strip()
 def speech_to_text(filename):
