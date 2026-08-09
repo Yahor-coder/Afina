@@ -1,5 +1,6 @@
 from chatgpt import ask_gpt, detect_command
 from commands import *
+from tts import speak
 
 
 def process_command(command):
@@ -33,6 +34,8 @@ def process_text(text):
         print("\n========== GPT ==========")
         print(answer)
         print("=========================\n")
+
+        speak(answer)
 
         return "CHAT"
 
