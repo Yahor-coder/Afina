@@ -4,7 +4,7 @@ import soundfile as sf
 
 def record_audio(filename, duration=5, samplerate=16000):
 
-    print("Recording...")
+    print("🎤 Говорите...")
 
     audio = sd.rec(
         int(duration * samplerate),
@@ -17,4 +17,4 @@ def record_audio(filename, duration=5, samplerate=16000):
 
     sf.write(filename, audio, samplerate)
 
-    print("Recording finished")
+    print("✅ Запись завершена")

@@ -74,7 +74,9 @@ def speech_to_text(filename):
 
         transcript = client.audio.transcriptions.create(
             model="gpt-4o-transcribe",
-            file=audio_file
+            file=audio_file,
+            language = "ru"
+
         )
 
     return transcript.text

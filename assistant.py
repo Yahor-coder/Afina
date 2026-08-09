@@ -20,8 +20,13 @@ def process_command(command):
     elif command == "OPEN_YOUTUBE":
         open_youtube()
 
+    else:
+        print("Неизвестная команда:", command)
+
 
 def process_text(text):
+
+    text = text.strip()
 
     command = detect_command(text)
 
@@ -37,8 +42,6 @@ def process_text(text):
 
         speak(answer)
 
-        return "CHAT"
+        return
 
     process_command(command)
-
-    return command
