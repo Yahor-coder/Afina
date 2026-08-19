@@ -1,6 +1,8 @@
 from chatgpt import ask_gpt, detect_command
 from commands import *
 from tts import speak
+from vision import see, ask_vision_memory, see_screen
+from memory import get_memory
 
 def local_command(text):
 
@@ -177,27 +179,95 @@ def process_text(text):
     print("GPT:", command)
 
     if command == "CHAT":
-
-        # -------------------------
-        # GPT
-        # -------------------------
-
-
         answer = ask_gpt(text)
-
-
 
         print("\nGPT")
         print()
         print("Афина:", answer)
 
+        speak(answer)
 
+        return "CHAT"
+
+    if command == "SCREEN":
+
+        answer = see_screen(text)
+
+        if answer:
+            speak(answer)
+        else:
+            speak("Я не могу нормально рассмотреть экран.")
+
+        return "SCREEN"
+
+    if command == "VISION":
+
+        answer = see(text)
+
+        if answer:
+            speak(answer)
+        else:
+            speak("Я не могу получить изображение.")
+
+        return "VISION"
+
+
+    if command == "VISION_MEMORY":
+
+        answer = ask_vision_memory(text)
+
+        if answer:
+            speak(answer)
+
+        return "VISION_MEMORY"
+
+    if command == "MEMORY":
+
+        memory = get_memory()
+
+        if not memory:
+            answer = "У меня пока нет сохранённых воспоминаний."
+
+        else:
+
+            context = ""
+
+            for item in memory[-30:]:
+                context += f"""
+Пользователь: {item["question"]}
+Афина: {item["answer"]}
+
+"""
+
+            prompt = f"""
+Ты — Афина.
+
+Пользователь спрашивает о том, что было
+в предыдущих наблюдениях.
+
+Сохранённая память:
+
+{context}
+
+Вопрос пользователя:
+
+{text}
+
+Ответь кратко и естественно.
+
+ВАЖНО:
+- используй только сохранённую информацию;
+- не обращайся к камере;
+- не выдавай старую информацию за текущее состояние;
+- если нужной информации нет, скажи об этом;
+- отвечай на русском языке.
+"""
+
+            answer = ask_gpt(prompt)
 
         speak(answer)
 
-
-
-        return "CHAT"
+        return "MEMORY"
 
     process_command(command)
 

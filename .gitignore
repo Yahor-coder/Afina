@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *.pyo
 
+# Runtime / generated files
+vision.jpg
+vision_memory.json
+record.wav
+
 # Virtual environment
 .venv/
 venv/

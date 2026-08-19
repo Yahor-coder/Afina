@@ -1,11 +1,12 @@
 import keyboard
-
 from recorder import record_audio
 from chatgpt import speech_to_text
 from assistant import process_text
 from tts import speak
-
+from camera import camera
+from vision import see
 def is_afina(text):
+
     text = text.lower().strip()
 
     variants = [
@@ -80,6 +81,19 @@ while True:
             speak("Хорошо. До свидания.")
             print("🔴 Афина выключена")
             break
+
+        # Включение камеры
+        if "включи камеру" in lower_text:
+            camera.start()
+            speak("Камера включена")
+            continue
+
+        # Выключение камеры
+        if "выключи камеру" in lower_text:
+            camera.stop()
+            speak("Камера выключена")
+            continue
+
 
         # Обычная команда / вопрос
         process_text(text)
